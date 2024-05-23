@@ -19,10 +19,13 @@ Next, we'll calculate the total steps taken per day, as well as the mean and med
 
 ```{r echo = TRUE}
 total_steps_per_day <- aggregate(steps ~ date, data = activity_no_na, sum)
+total_steps_per_day
 
 mean_steps_per_day <- mean(total_steps_per_day$steps)
+mean_steps_per_day
 
 median_steps_per_day <- median(total_steps_per_day$steps)
+median_steps_per_day
 
 hist(total_steps_per_day$steps, main = "Total Steps Per Day", xlab = "Steps", col = "skyblue")
 ```
@@ -37,12 +40,14 @@ plot(avg_steps_per_interval$interval, avg_steps_per_interval$steps, type = "l",
      xlab = "5-Minute Interval", ylab = "Average Steps")
 
 max_interval <- avg_steps_per_interval$interval[which.max(avg_steps_per_interval$steps)]
+max_interval
 ```
 
 Looks like the max interval is 835.  To understand what impact our null values have on our averages, we'll count how many we have,  fill each  missing value with the mean for the corresponding interval, and create a histogram of the total steps per day with the estimated values.
 
 ```{r echo = TRUE}
 total_missing_values <- sum(is.na(activity_data))
+total_missing_values
 
 activity_imputed <- activity_data
 activity_imputed$steps[is.na(activity_imputed$steps)] <- avg_steps_per_interval$steps
@@ -50,8 +55,10 @@ activity_imputed$steps[is.na(activity_imputed$steps)] <- avg_steps_per_interval$
 total_steps_per_day_imputed <- aggregate(steps ~ date, data = activity_imputed, sum)
 
 mean_steps_per_day_imputed <- mean(total_steps_per_day_imputed$steps)
-median_steps_per_day_imputed <- median(total_steps_per_day_imputed$steps)
+mean_steps_per_day_imputed
 
+median_steps_per_day_imputed <- median(total_steps_per_day_imputed$steps)
+median_steps_per_day_imputed
 
 hist(total_steps_per_day_imputed$steps, main = "Total Steps Per Day (Imputed)",
      xlab = "Steps", col = "salmon")
@@ -73,6 +80,6 @@ ggplot(avg_steps_by_day_type, aes(x = interval, y = steps, color = day_type)) +
   labs(x = "5-Minute Interval", y = "Average Steps", title = "Activity Patterns: Weekdays vs. Weekends")
 
 ```
-We can see that weekdays seem to have more activity first thing in the morning, but weekends have greater sustaine activity throughut the day. 
+We can see that weekdays seem to have more activity first thing in the morning, but weekends have greater sustained activity throughout the day. 
 
 
